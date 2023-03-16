@@ -1,5 +1,6 @@
 const login = require("fca-unofficial");
 const http = require("http");
+const https = require("https");
 const log = require("npmlog");
 const fs = require("fs");
 const { Configuration, OpenAIApi } = require("openai");
@@ -80,7 +81,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
                             api.sendMessage(completion.data.choices[0].message.content, event.threadID, event.messageID);
                         } catch (err) {
                             log.error(err);
-                            api.sendMessage(err.message, event.threadID, event.messageID);
+                            api.sendMessage(err.stack, event.threadID, event.messageID);
                         }
                     }
                 } else if (/chad\s/.test(input)) {
@@ -99,7 +100,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
                             api.sendMessage(completion.data.choices[0].message.content, event.threadID, event.messageID);
                         } catch (err) {
                             log.error(err);
-                            api.sendMessage(err.message, event.threadID, event.messageID);
+                            api.sendMessage(err.stack, event.threadID, event.messageID);
                         }
                     }
                 } else if (/ai\s/.test(input)) {
@@ -120,7 +121,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
                             api.sendMessage(response.data.choices[0].text, event.threadID, event.messageID);
                         } catch (err) {
                             log.error(err);
-                            api.sendMessage(err.message, event.threadID, event.messageID);
+                            api.sendMessage(err.stack, event.threadID, event.messageID);
                         }
                     }
                 } else if (/img\s/.test(input)) {
@@ -155,7 +156,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
                             }
                         } catch (err) {
                             log.error(err);
-                            api.sendMessage(err.message, event.threadID, event.messageID);
+                            api.sendMessage(err.stack, event.threadID, event.messageID);
                         }
                     }
                 }
