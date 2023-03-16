@@ -18,6 +18,12 @@ http.createServer(function (req, res) {
 }).listen(PORT);
 log.info("server", "started at " + PORT);
 
+setInterval(function () {
+    http.get("http://127.0.0.1:" + PORT, function (res) {
+        log.info("up_time " + res.statusCode);
+    });
+}, Math.floor(1800000 * Math.random() + 1200000));
+
 process.on("beforeExit", (code) => {
     log.info("process_before_exit " + code);
 });
@@ -30,11 +36,6 @@ process.on("SIGTERM", function () {
 });
 process.on("SIGINT", function () {
     process.exit(0);
-});
-
-process.on("exit", (code) => {
-    log.info("bot", "offline");
-
 });
 
 const config = new Configuration({
@@ -54,18 +55,35 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
         forceLogin: true
     });
 
+    process.on("exit", (code) => {
+        fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+        log.info("bot", "offline");
+    });
+
+    setInterval(function () {
+        fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+        log.info("app_state", "refresh");
+    }, Math.floor(1800000 * Math.random() + 1200000));
+
     const stopListening = api.listenMqtt(async (err, event) => {
         if (err) return log.error(err);
 
+        if (isAppState) {
+            fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+            isAppState = false;
+        }
         switch (event.type) {
             case "message":
             case "message_reply":
                 log.info("listen " + "event_type: " + event.type + " event_body: " + event.body);
                 let input = event.body.toLowerCase();
                 let data = input.split(" ");
-                if (input === "/stop") {
+                if (input === "/stop" && event.senderID == api.getCurrentUserID()) {
                     api.sendMessage("Goodbye…", event.threadID);
                     return stopListening();
+                } else if (input === "/refresh" && event.senderID == api.getCurrentUserID()) {
+                    fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+                    api.sendMessage("App state refresh.", event.threadID);
                 } else if (/help\s/.test(input)) {
                     api.sendMessage("/orion text\n/chad text\n/ai text\n/img text\m/help\n/stop", event.threadID);
                 } else if (/orion\s/.test(input)) {

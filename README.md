@@ -9,4 +9,5 @@
 / Img
 / Help
 / Stop
+/ Refresh
 ~~~
