@@ -1,6 +1,6 @@
 {
     "name": "facebook-chatbot-using-openai",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A example of how to use OpenAI creating chatbot at Facebook Messenger Platform.",
     "main": "index.js",
     "scripts": {
