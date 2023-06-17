@@ -8,7 +8,7 @@ const { Configuration, OpenAIApi } = require("openai");
 log.info("bot", "online");
 
 const PORT = 8080;
-const isAppState = true;
+let isAppState = true;
 const openAiKey = "";
 
 http.createServer(function (req, res) {
@@ -48,7 +48,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
 
     api.setOptions({
         listenEvents: true,
-        selfListen: false,
+        selfListen: true,
         autoMarkRead: false,
         autoMarkDelivery: false,
         online: true,
@@ -56,12 +56,12 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
     });
 
     process.on("exit", (code) => {
-        fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+        fs.writeFileSync(__dirname + "/appstate.json", JSON.stringify(api.getAppState()), "utf8");
         log.info("bot", "offline");
     });
 
     setInterval(function () {
-        fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+        fs.writeFileSync(__dirname + "/appstate.json", JSON.stringify(api.getAppState()), "utf8");
         log.info("app_state", "refresh");
     }, Math.floor(1800000 * Math.random() + 1200000));
 
@@ -69,7 +69,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
         if (err) return log.error(err);
 
         if (isAppState) {
-            fs.writeFileSync(__dirname + "/appstate.json", api.getAppState(), "utf8");
+            fs.writeFileSync(__dirname + "/appstate.json", JSON.stringify(api.getAppState()), "utf8");
             isAppState = false;
         }
         switch (event.type) {
