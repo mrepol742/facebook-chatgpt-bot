@@ -1,4 +1,4 @@
-# Facebook-ChatBot-using-OpenAI
+# facebook-chatgpt-bot
 
 ## Features
 
@@ -13,7 +13,15 @@
 / Refresh
 ~~~
 
-## Note
-If you are cloning this to copy Project Orion you are in wrong repository, this is just a demo of how to integrate openai & fca-unofficial client to facebook.
+## How to deploy
 
-Project Orion uses different facebook client and completely different from this.
+1. git clone https://github.com/mrepol742/facebook-chatgpt-bot
+2. cd facebook-chatgpt-bot
+3. npm i
+4. node run start
+
+## Deployment
+
+1. You can deploy this repository locally using terminal/cmd/termux
+2. You can use [Replit](https://replit.com) to deploy this repository so it's online even you don't have internet
+3. You can use Microsoft Azure or Digital Ocean too. Just create a VM and do the deployment on the terminal by opening the VM using XRDP.
