@@ -9,19 +9,19 @@
 / Nraf
 / Img
 / Help
-/ Stop
 / Refresh
 ~~~
 
-## How to deploy
+## Run
 
-1. git clone https://github.com/mrepol742/facebook-chatgpt-bot
-2. cd facebook-chatgpt-bot
-3. npm i
-4. node run start
+```bash
+# clone the repo to your machine
+git clone https://github.com/mrepol742/facebook-chatgpt-bot
 
-## Deployment
+# open the clone repo folder
+cd facebook-chatgpt-bot
 
-1. You can deploy this repository locally using terminal/cmd/termux
-2. You can use [Replit](https://replit.com) to deploy this repository so it's online even you don't have internet
-3. You can use Microsoft Azure or Digital Ocean too. Just create a VM and do the deployment on the terminal by opening the VM using XRDP.
+# install dependecies then run
+npm i && node run start
+
+```
